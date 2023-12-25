@@ -10,7 +10,7 @@ import (
 type CliCommand struct {
 	name string
 	description string
-	onCommandFunc func() error
+	onCommandFunc func(*Config) error
 }
 
 func getCommands() map[string]CliCommand {
@@ -25,11 +25,21 @@ func getCommands() map[string]CliCommand {
 			description: "exit programm",
 			onCommandFunc: callbackExit,
 		},
+		"map": {
+			name: "map",
+			description: "show next 20 location areas",
+			onCommandFunc: callbackMap,
+		},
+		"mapb": {
+			name: "mapb",
+			description: "show previous 20 location areas",
+			onCommandFunc: callbackMapb,
+		},
 	}
 
 }
 
-func startREPL() {
+func startREPL(cfg *Config) {
 	commandsMap := getCommands()
 	
 	scanner := bufio.NewScanner(os.Stdin)
@@ -45,7 +55,10 @@ func startREPL() {
 		}
 		commandName := cleaned[0]
 		if command, ok := commandsMap[commandName]; ok {
-			command.onCommandFunc()
+			err := command.onCommandFunc(cfg)
+			if err != nil {
+				fmt.Println(err)
+			}
 		} else {
 			fmt.Printf("No such command: %v \n", commandName)
 		}

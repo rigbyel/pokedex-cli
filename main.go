@@ -2,18 +2,22 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"github.com/rigbyel/pokedex-cli/internal/pokeapi"
 )
 
-func main() {
-	pokeapiClient := pokeapi.NewHttpClient()
-	locations, err := pokeapiClient.GetLocationAreasResponse()
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Print(locations)
+type Config struct {
+	pokeapiClient pokeapi.HttpClient
+	prevLocationUrl *string
+	nextLocationUrl *string
+}
 
-	//fmt.Println("Hello! This is Pokedex. Enter 'help' command to see more information.")
-	//startREPL()
+func main() {
+	cfg := Config {
+		pokeapiClient : pokeapi.NewHttpClient(),
+		prevLocationUrl: nil,
+		nextLocationUrl: nil,
+	}
+	
+	fmt.Println("Hello! This is Pokedex. Enter 'help' command to see more information.")
+	startREPL(&cfg)
 }

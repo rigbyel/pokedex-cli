@@ -7,9 +7,14 @@ import (
 	"net/http"
 )
 
-func (client HttpClient) GetLocationAreasResponse() (LocationAreasResponse, error) {
-	endpoint := "/location-area?offset=0&limit=20"
-	totalUrl := baseUrl + endpoint
+func (client HttpClient) GetLocationAreasResponse(pageUrl *string) (LocationAreasResponse, error) {
+	var totalUrl string
+	if pageUrl == nil {
+		endpoint := "/location-area?offset=0&limit=20"
+		totalUrl = baseUrl + endpoint
+	} else {
+		totalUrl = *pageUrl
+	} 
 
 	req, err := http.NewRequest("GET", totalUrl, nil)
 	if err != nil {
