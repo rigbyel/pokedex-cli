@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 
-func callbackMap(cfg *Config) error {
+func callbackMap(cfg *Config, params ...string) error {
 	locations, err := cfg.pokeapiClient.GetLocationAreasResponse(cfg.nextLocationUrl)
 	if err != nil {
 		return err

@@ -10,7 +10,7 @@ import (
 type CliCommand struct {
 	name string
 	description string
-	onCommandFunc func(*Config) error
+	onCommandFunc func(cfg *Config, params ...string) error
 }
 
 func getCommands() map[string]CliCommand {
@@ -54,8 +54,13 @@ func startREPL(cfg *Config) {
 			continue
 		}
 		commandName := cleaned[0]
+		args := []string{}
+		if len(cleaned) > 1{
+			args = cleaned[1:]
+		}
+
 		if command, ok := commandsMap[commandName]; ok {
-			err := command.onCommandFunc(cfg)
+			err := command.onCommandFunc(cfg, args...)
 			if err != nil {
 				fmt.Println(err)
 			}
