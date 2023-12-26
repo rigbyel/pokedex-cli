@@ -20,11 +20,6 @@ func getCommands() map[string]CliCommand {
 			description: "prints help info",
 			onCommandFunc: callbackHelp,
 		},
-		"exit": {
-			name: "exit",
-			description: "exit programm",
-			onCommandFunc: callbackExit,
-		},
 		"map": {
 			name: "map",
 			description: "show next 20 location areas",
@@ -34,6 +29,16 @@ func getCommands() map[string]CliCommand {
 			name: "mapb",
 			description: "show previous 20 location areas",
 			onCommandFunc: callbackMapb,
+		},
+		"explore": {
+			name: "explore <area name>",
+			description: "show all pokemons in the area",
+			onCommandFunc: callbackExplore,
+		},
+		"exit": {
+			name: "exit",
+			description: "exit programm",
+			onCommandFunc: callbackExit,
 		},
 	}
 
