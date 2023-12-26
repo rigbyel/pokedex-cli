@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func (client HttpClient) GetLocationAreasResponse(pageUrl *string) (LocationAreasResponse, error) {
+func (client *HttpClient) GetLocationAreasResponse(pageUrl *string) (LocationAreasResponse, error) {
 	var totalUrl string
 	if pageUrl == nil {
 		endpoint := "/location-area?offset=0&limit=20"
@@ -15,6 +15,12 @@ func (client HttpClient) GetLocationAreasResponse(pageUrl *string) (LocationArea
 	} else {
 		totalUrl = *pageUrl
 	} 
+
+	if data, ok := client.cache.Get(totalUrl); ok {
+		locationAreasResp := LocationAreasResponse{}
+		err := json.Unmarshal(data, &locationAreasResp)
+		return locationAreasResp, err
+	}
 
 	req, err := http.NewRequest("GET", totalUrl, nil)
 	if err != nil {
@@ -39,6 +45,10 @@ func (client HttpClient) GetLocationAreasResponse(pageUrl *string) (LocationArea
 
 	locationAreasResp := LocationAreasResponse{}
 	err = json.Unmarshal(data, &locationAreasResp)
-	
+	if err != nil {
+		return LocationAreasResponse{}, err
+	}
+
+	client.cache.Add(totalUrl, data)
 	return locationAreasResp, err
 }

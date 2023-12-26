@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/rigbyel/pokedex-cli/internal/pokeapi"
 )
 
@@ -13,7 +15,7 @@ type Config struct {
 
 func main() {
 	cfg := Config {
-		pokeapiClient : pokeapi.NewHttpClient(),
+		pokeapiClient : pokeapi.NewHttpClient(5*time.Minute),
 		prevLocationUrl: nil,
 		nextLocationUrl: nil,
 	}
